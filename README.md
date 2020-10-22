@@ -14,4 +14,5 @@ TBA
 
 ## Credits and License
 Shoutout to Sam and Ralf (for now) for helping me out.
+This project has a MIT license.
 
