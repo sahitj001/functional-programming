@@ -1,0 +1,27 @@
+{
+  "name": "functional-programming",
+  "version": "1.0.0",
+  "description": "functional programming course by the university of Amsterdam",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahitj001/functional-programming.git"
+  },
+  "keywords": [
+    "functional",
+    "programming"
+  ],
+  "author": "jordy sahit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sahitj001/functional-programming/issues"
+  },
+  "homepage": "https://github.com/sahitj001/functional-programming#readme"
+}
