@@ -20,7 +20,7 @@ const filterData = (data, column) => {
 
 const cleanData = (data => {
 	console.log('test')
-	if(data = undefined){
+	if(data = 'undefined'){
 		const none = data.concat('geen')
 		console.log('added geen' ,none)
 	}
