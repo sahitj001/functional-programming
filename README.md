@@ -10,18 +10,14 @@ We are going to deliver an interactive data visualization. We must have a good t
 
 ## Research question
 
-**How many people make use of all garages within Amsterdam and what is there any specific reason for parking there?**
+**What are the average parkingcosts per capital city of the province?**
 
-It could be possible that people park in Amsterdam to work. This also could mean that the garage they park at is free of cost (since their company pays for the parking costs). Another reason also could be that they are parking in Amsterdam because they want to have some fun in Amsterdam.
+I assume that Amsterdam will be having the highest average parkingcosts since there are the most people. 
 
 ## Data I need
 
-- Number of garages
-- What kind of garage is it?
-- Location of the garage (isn't really needed but could be nice)
-- Price of the garage (not sure if I need this one)
-- Opening hours garage (not sure if I need this one as well)
-- Number of people visiting a garage
+- Location of the parking garages
+- Rates of parking garage
 
 
 ## Features
