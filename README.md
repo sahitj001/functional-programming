@@ -17,7 +17,9 @@ I assume that Noord-Holland will have the most parkingspots on average.
 ## Data I need
 
 [I will be needing the unique identifier of the garages](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-PARKEERGEBIED/mz4f-59fw)
+
 [I will need the parking spots](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-SPECIFICATIES-PARKEERGEBIED/b3us-f26s)
+
 [I will need the location of the parking garage](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-Index-Statisch-en-Dynamisch/f6v7-gjpa)
 
 
