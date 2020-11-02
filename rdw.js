@@ -32,8 +32,6 @@ getData('https://cors-anywhere.herokuapp.com/' + url2)
 		// 		console.log(matchingId)
 		// 	})
 		// 	return element;
-		// const cleanedData = cleanData(result)
-		// console.log(cleanedData);
 	})
 
 async function getData(url) {
@@ -46,13 +44,3 @@ const filterData = (data, column) => {
 	return data.map(result => result[column])
 }
 
-// const cleanData = (data => {
-// 	console.log('test')
-// 	for(i = 0; i<data.length; i++ ){
-// 		if(data = 'undefined'){
-// 			const none = data
-// 			console.log('added geen ' ,none)
-// 		}
-// 	}
-
-// })
