@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "functional programming course by the university of Amsterdam",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "browserify-fs": "^1.0.0"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "node index.js"
