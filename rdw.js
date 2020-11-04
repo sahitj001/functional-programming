@@ -1,18 +1,49 @@
 
 
-// //playing with data from folder so I won't get rate limited
+// playing with data from folder so I won't get rate limited
+
 const jsonData = require('./v2')
 console.log(jsonData.ParkingFacilities.length)
-console.log(jsonData.ParkingFacilities[0].identifier)
 
+// Getting unique id from json list
 const garageId = []
 
-// for (let index = 0; index < jsonData.ParkingFacilities.length; index++) {
-// 	console.log('test')
-// 	// garageId.push(jsonData.ParkingFacilities.identifier)
-// 	// console.log(garageId)
-// }
+for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
+	// console.log(i)
+	garageId.push(jsonData.ParkingFacilities[i].identifier)
+}
 
+
+// Here I request the information with the unique ID from another dataset.
+
+// sanity check
+const infoGarageCheck = require('./dummyData/' + garageId[0])
+console.log('testing dummydata: ', infoGarageCheck.parkingFacilityInformation.specifications[0].capacity)
+
+// store garage capacity into an array
+const garageCap = []
+
+const check = infoGarageCheck.parkingFacilityInformation.specifications[0].hasOwnProperty('capacity')
+console.log(check)
+
+// garageCap.push(infoGarageCheck.parkingFacilityInformation.specifications[0].capacity)
+// console.log(garageCap[0])
+
+for (let i = 0; i < garageId.length; i++) {
+	const getInfo = require('./dummyData/' + garageId[i])
+	const getCap = getInfo.parkingFacilityInformation.specifications[0].capacity
+	console.log(getCap)
+	garageCap.push(getCap)
+}
+console.log('test ', garageCap[0])
+
+// const allData = [{
+// 	province : province,
+// 	capacity : capacity
+// }]
+
+
+// THE API WAY
 // console.log('d3 loaded', d3)
 
 
@@ -39,8 +70,8 @@ const cors = 'https://cors-anywhere.herokuapp.com/'
 	// .then(information => {
 	// 	console.log('informationnn', information)
 
-	// 	for (let index = 0; index < information.length; index++) {
-	// 		const element = array[index];
+	// 	for (let i = 0; i < information.length; i++) {
+	// 		const element = array[i];
 
 	// 	}
 
