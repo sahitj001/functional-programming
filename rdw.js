@@ -29,14 +29,40 @@ console.log(check)
 // garageCap.push(infoGarageCheck.parkingFacilityInformation.specifications[0].capacity)
 // console.log(garageCap[0])
 
-for (let i = 0; i < garageId.length; i++) {
-	const getInfo = require('./dummyData/' + garageId[i])
+// for (let i = 0; i < garageId.length; i++) {
+ 	const getInfo = require('./dummyData/' + garageId[0])
 	const getCap = getInfo.parkingFacilityInformation.specifications[0].capacity
-	console.log(getCap)
-	garageCap.push(getCap)
-}
-console.log('test ', garageCap[0])
 
+	const checkCap = getInfo.parkingFacilityInformation.specifications[0]
+	// .hasOwnProperty('capacity')
+
+// 	console.log('check true or false: ', checkCap)
+
+// 	garageCap.push(getCap)
+// }
+// console.log('test ', garageCap[0])
+
+
+
+const cleanCapacity = function(chosenArray, chosenData, checkProp){
+	const location = chosenData
+	console.log('capacity number is: ',location)
+
+for (let i = 0; i < chosenArray.length; i++) {
+	const check = checkProp.hasOwnProperty('capacity')
+	if(check){
+		garageCap.push(chosenData[i])
+	} else {
+		garageCap.push('none')
+	}
+}
+	const check = checkProp.hasOwnProperty('capacity')
+	console.log('t2',check)
+	return check
+}
+const pCap = cleanCapacity(garageId, getCap, checkCap)
+console.log('function cleanCapacity giving a: ',pCap)
+console.log('garagecap:', garageCap)
 // const allData = [{
 // 	province : province,
 // 	capacity : capacity
