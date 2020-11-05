@@ -30,10 +30,10 @@ console.log(check)
 // console.log(garageCap[0])
 
 // for (let i = 0; i < garageId.length; i++) {
- 	const getInfo = require('./dummyData/' + garageId[0])
+ 	const getInfo = require('./dummyData/' + garageId[3])
 	const getCap = getInfo.parkingFacilityInformation.specifications[0].capacity
-
-	const checkCap = getInfo.parkingFacilityInformation.specifications[0]
+	console.log('CHECKING GETCAP: ', getCap)
+	// const checkCap = getInfo.parkingFacilityInformation.specifications[0]
 	// .hasOwnProperty('capacity')
 
 // 	console.log('check true or false: ', checkCap)
@@ -44,25 +44,54 @@ console.log(check)
 
 
 
-const cleanCapacity = function(chosenArray, chosenData, checkProp){
-	const location = chosenData
-	console.log('capacity number is: ',location)
 
-for (let i = 0; i < chosenArray.length; i++) {
-	const check = checkProp.hasOwnProperty('capacity')
+
+
+for (let i = 0; i < garageId.length; i++) {
+	const getParkingCap = require('./dummyData/' + garageId[i])
+	// const checkCap = getParkingCap.parkingFacilityInformation.specifications[0].capacity
+	const check = getParkingCap.parkingFacilityInformation.hasOwnProperty('specifications')
+	// const checkCap = getParkingCap.parkingFacilityInformation.specifications[0].hasOwnProperty('capacity')
+
 	if(check){
-		garageCap.push(chosenData[i])
+		console.log('id has a specification')
+		// const checkIt = getParkingCap.parkingFacilityInformation.specifications[0].hasOwnProperty('capacity')
+
+		if(getParkingCap.parkingFacilityInformation.specifications[0] === null){
+			console.log('yeeeeeeeeet')
+			garageCap.push(String('it dont work like this'))
+		} else if(getParkingCap.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true){
+			console.log('logging id: ', garageId[i])
+			console.log('reeee')
+			garageCap.push(String('it dont work like this'))
+		} else {
+			console.log('logging id: ', garageId[i])
+			const getCapacity = getParkingCap.parkingFacilityInformation.specifications[0].capacity
+			garageCap.push(getCapacity)
+		}
+
 	} else {
-		garageCap.push('none')
+		console.log('found no capacity')
+		garageCap.push(String('it dont work like this'))
+
 	}
 }
-	const check = checkProp.hasOwnProperty('capacity')
-	console.log('t2',check)
-	return check
+console.log('this log should give 22: ', garageCap[0])
+
+const checkArray = garageCap.includes("it dont work like this")
+console.log('checking array..: ', checkArray)
+
+
+function checkNull(obj) {
+	const replace = 'none'
+	if(obj === null) {
+		console.log('checknull doesnt approve')
+		return replace
+	} else {
+		return console.log('checknull approves')
+	}
 }
-const pCap = cleanCapacity(garageId, getCap, checkCap)
-console.log('function cleanCapacity giving a: ',pCap)
-console.log('garagecap:', garageCap)
+
 // const allData = [{
 // 	province : province,
 // 	capacity : capacity
