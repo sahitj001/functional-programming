@@ -1,96 +1,66 @@
-
-
 // playing with data from folder so I won't get rate limited
-
 const jsonData = require('./v2')
 console.log(jsonData.ParkingFacilities.length)
 
-// Getting unique id from json list
+// I will store the unique ID of the garages in this array
 const garageId = []
+// I will store the garage capacities in this array
+const garageCap = []
 
-for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
-	// console.log(i)
-	garageId.push(jsonData.ParkingFacilities[i].identifier)
-}
+// Here I get the unique ID of the parking garage and store it in the array
+getId()
 
 
 // Here I request the information with the unique ID from another dataset.
 
-// sanity check
+// First a quick sanity check
 const infoGarageCheck = require('./dummyData/' + garageId[0])
 console.log('testing dummydata: ', infoGarageCheck.parkingFacilityInformation.specifications[0].capacity)
-
-// store garage capacity into an array
-const garageCap = []
-
 const check = infoGarageCheck.parkingFacilityInformation.specifications[0].hasOwnProperty('capacity')
 console.log(check)
-
-// garageCap.push(infoGarageCheck.parkingFacilityInformation.specifications[0].capacity)
-// console.log(garageCap[0])
-
-// for (let i = 0; i < garageId.length; i++) {
- 	const getInfo = require('./dummyData/' + garageId[3])
-	const getCap = getInfo.parkingFacilityInformation.specifications[0].capacity
-	console.log('CHECKING GETCAP: ', getCap)
-	// const checkCap = getInfo.parkingFacilityInformation.specifications[0]
-	// .hasOwnProperty('capacity')
-
-// 	console.log('check true or false: ', checkCap)
-
-// 	garageCap.push(getCap)
-// }
-// console.log('test ', garageCap[0])
+const getInfo = require('./dummyData/' + garageId[3])
+const getCap = getInfo.parkingFacilityInformation.specifications[0].capacity
+console.log('CHECKING GETCAP: ', getCap)
 
 
-
-
-
+// In this for loop I will be extracting the garage capacity out of the elements. I have encountered many problems with empty values and values that weren't even there.
+// I use the identifiers I got from the other dataset to look up the elements in another dataset. Here I can get various stuff.
 
 for (let i = 0; i < garageId.length; i++) {
 	const getParkingCap = require('./dummyData/' + garageId[i])
-	// const checkCap = getParkingCap.parkingFacilityInformation.specifications[0].capacity
 	const check = getParkingCap.parkingFacilityInformation.hasOwnProperty('specifications')
-	// const checkCap = getParkingCap.parkingFacilityInformation.specifications[0].hasOwnProperty('capacity')
 
-	if(check){
+	if (check) {
 		console.log('id has a specification')
-		// const checkIt = getParkingCap.parkingFacilityInformation.specifications[0].hasOwnProperty('capacity')
-
-		if(getParkingCap.parkingFacilityInformation.specifications[0] === null){
+		if (getParkingCap.parkingFacilityInformation.specifications[0] === null) {
+			console.log('logging id: ', garageId[i])
 			console.log('yeeeeeeeeet')
 			garageCap.push(String('it dont work like this'))
-		} else if(getParkingCap.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true){
+		} else if (getParkingCap.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true) {
 			console.log('logging id: ', garageId[i])
 			console.log('reeee')
 			garageCap.push(String('it dont work like this'))
 		} else {
 			console.log('logging id: ', garageId[i])
+			console.log('found the capacity!')
 			const getCapacity = getParkingCap.parkingFacilityInformation.specifications[0].capacity
 			garageCap.push(getCapacity)
 		}
 
 	} else {
-		console.log('found no capacity')
+		console.log('found no specification value')
 		garageCap.push(String('it dont work like this'))
 
 	}
 }
 console.log('this log should give 22: ', garageCap[0])
 
+// checking if if/else statements really worked.
 const checkArray = garageCap.includes("it dont work like this")
 console.log('checking array..: ', checkArray)
 
+// TODO: need to extract province out of dataset
 
-function checkNull(obj) {
-	const replace = 'none'
-	if(obj === null) {
-		console.log('checknull doesnt approve')
-		return replace
-	} else {
-		return console.log('checknull approves')
-	}
-}
 
 // const allData = [{
 // 	province : province,
@@ -122,16 +92,16 @@ const cors = 'https://cors-anywhere.herokuapp.com/'
 // 		return identifier
 // 	})
 
-	// .then(information => {
-	// 	console.log('informationnn', information)
+// .then(information => {
+// 	console.log('informationnn', information)
 
-	// 	for (let i = 0; i < information.length; i++) {
-	// 		const element = array[i];
+// 	for (let i = 0; i < information.length; i++) {
+// 		const element = array[i];
 
-	// 	}
+// 	}
 
-	// 	return information
-	// })
+// 	return information
+// })
 
 async function getData(url) {
 	const response = await fetch(url)
@@ -141,4 +111,10 @@ async function getData(url) {
 
 const filterData = (data, column) => {
 	return data.ParkingFacilities.map(result => result[column])
+}
+
+function getId() {
+	for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
+		garageId.push(jsonData.ParkingFacilities[i].identifier)
+	}
 }
