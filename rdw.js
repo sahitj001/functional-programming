@@ -33,21 +33,23 @@ console.log(garageProvince)
 
 for (let i = 0; i < garageId.length; i++) {
 	const getParkingId = require('./dummyData/' + garageId[i])
-	const check = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
+	const checkOp = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
+	const checkAp = getParkingId.parkingFacilityInformation.hasOwnProperty('accessPoints')
 
-	if (check) {
+	if (checkOp || checkAp) {
 		console.log('garageId', garageId[i], i, 'is being checked now')
-		if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0] === null) {
+		if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses === undefined || getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0] === null) {
 			console.log('logging id: ', garageId[i])
 			console.log('yeeeeeeeeet')
 			garageProvince.push(String('it dont work like this'))
 		} else if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].hasOwnProperty('province') == true) {
 			console.log('logging id: ', garageId[i])
-			console.log('reeee')
-			garageProvince.push(String('it dont work like this'))
+			console.log('found province in the operator')
+			const getProv = getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].province
+			garageProvince.push(getProv)
 		} else if (getParkingId.parkingFacilityInformation.accessPoints[0].accessPointAddress.hasOwnProperty('province') == true) {
 			console.log('logging id: ', garageId[i])
-			console.log('found the province in the accesspoint!')
+			console.log('apppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp')
 			garageProvince.push(getParkingId.parkingFacilityInformation.accessPoints[0].accessPointAddress.province)
 		}
 		else {
@@ -62,6 +64,9 @@ for (let i = 0; i < garageId.length; i++) {
 		garageProvince.push(String('it dont work like this'))
 	}
 }
+
+console.log(garageProvince[0])
+
 
 // TODO: put all data in one object-array
 // const allData = [{
@@ -119,8 +124,8 @@ function test(){for (let i = 0; i < garageId.length; i++) {
 // console.log('this log should give 22: ', garageCap[0])
 
 // checking if if/else statements really worked.
-const checkArray = garageCap.includes("it dont work like this")
-console.log('checking array..: ', checkArray)
+// const checkArray = garageCap.includes("it dont work like this")
+// console.log('checking array..: ', checkArray)
 
 
 
