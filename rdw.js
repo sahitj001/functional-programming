@@ -9,8 +9,21 @@ const garageCap = []
 // I will store the location aka the province of the garage into the array
 const garageProvince = []
 
+// Store all data in one object
+const allData = []
+
+
 // Here I get the unique ID of the parking garage and store it in the array
 getId()
+getCapacity()
+getProvince()
+storeData()
+
+const test = sortProv(allData, 'Groningen')
+console.log(test)
+
+// console.log('checking the dataaaaa', allData)
+// console.log('pls', allData[0])
 
 
 // First a quick sanity check. Here I request the information with the unique ID from another dataset. In this case I am looking for the parking capacity
@@ -24,111 +37,33 @@ getId()
 
 
 // Here I am sanity checking for the location of the garage
-const infoGarageCheck = require('./dummyData/' + garageId[0])
-console.log('testing dummydata: ', infoGarageCheck.parkingFacilityInformation.accessPoints[0].accessPointAddress.province)
+// const infoGarageCheck = require('./dummyData/' + garageId[0])
+// console.log('testing dummydata: ', infoGarageCheck.parkingFacilityInformation.accessPoints[0].accessPointAddress.province)
 
-// TODO: need to extract province out of dataset
+function sortProv(chosenArray, prov) {
 
-console.log(garageProvince)
+	for (let i = 0; i < chosenArray.length; i++) {
+		const checkProv = chosenArray[i].province.includes(prov)
+		console.log(chosenArray.length)
+		if(checkProv){
+			// console.log('found the chosen province!')
 
-for (let i = 0; i < garageId.length; i++) {
-	const getParkingId = require('./dummyData/' + garageId[i])
-	const checkOp = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
-	const checkAp = getParkingId.parkingFacilityInformation.hasOwnProperty('accessPoints')
 
-	if (checkOp || checkAp) {
-		console.log('garageId', garageId[i], i, 'is being checked now')
-		if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses === undefined || getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0] === null) {
-			console.log('logging id: ', garageId[i])
-			console.log('yeeeeeeeeet')
-			garageProvince.push(String('it dont work like this'))
-		} else if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].hasOwnProperty('province') == true) {
-			console.log('logging id: ', garageId[i])
-			console.log('found province in the operator')
-			const getProv = getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].province
-			garageProvince.push(getProv)
-		} else if (getParkingId.parkingFacilityInformation.accessPoints[0].accessPointAddress.hasOwnProperty('province') == true) {
-			console.log('logging id: ', garageId[i])
-			console.log('apppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp')
-			garageProvince.push(getParkingId.parkingFacilityInformation.accessPoints[0].accessPointAddress.province)
+		} else {
+		// console.log('not the province')
+		chosenArray.splice(i,1)
 		}
-		else {
-			console.log('logging id: ', garageId[i])
-			console.log('found the province in the operator!')
-			const getProv = getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].province
-			garageProvince.push(getProv)
-		}
-
-	} else {
-		console.log('found no specification value')
-		garageProvince.push(String('it dont work like this'))
 	}
+
+	return chosenArray
 }
 
-console.log(garageProvince[0])
 
 
-// TODO: put all data in one object-array
-// const allData = [{
-// 	province : province,
-// 	capacity : capacity,
-//  id : id
-// }]
+
+
 
 // TODO: sort/splice the object-array
-
-function test(){for (let i = 0; i < garageId.length; i++) {
-	const getParkingId = require('./dummyData/' + garageId[i])
-	const checkOp = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
-	const checkAp = getParkingId.parkingFacilityInformation.accessPoints.hasOwnProperty('province')
-
-	if(checkAp){
-
-	}
-
-}
-}
-
-
-// In this for loop I will be extracting the garage capacity out of the elements. I have encountered many problems with empty values and values that weren't even there.
-// I use the identifiers I got from the other dataset to look up the elements in another dataset. Here I can get various stuff.
-
-// for (let i = 0; i < garageId.length; i++) {
-// 	const getParkingId = require('./dummyData/' + garageId[i])
-// 	const check = getParkingId.parkingFacilityInformation.hasOwnProperty('specifications')
-
-// 	if (check) {
-// 		console.log('id has a specification')
-// 		if (getParkingId.parkingFacilityInformation.specifications[0] === null) {
-// 			console.log('logging id: ', garageId[i])
-// 			console.log('yeeeeeeeeet')
-// 			garageCap.push(String('it dont work like this'))
-// 		} else if (getParkingId.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true) {
-// 			console.log('logging id: ', garageId[i])
-// 			console.log('reeee')
-// 			const getCapacity = getParkingId.parkingFacilityInformation.specifications[0].capacity
-// 			garageCap.push(getCapacity)
-// 		} else {
-// 			console.log('logging id: ', garageId[i])
-// 			console.log('found the capacity!')
-// 			const getCapacity = getParkingId.parkingFacilityInformation.specifications[0].capacity
-// 			garageCap.push(getCapacity)
-// 		}
-
-// 	} else {
-// 		console.log('found no specification value')
-// 		garageCap.push(String('it dont work like this'))
-
-// 	}
-// }
-// console.log('this log should give 22: ', garageCap[0])
-
-// checking if if/else statements really worked.
-// const checkArray = garageCap.includes("it dont work like this")
-// console.log('checking array..: ', checkArray)
-
-
-
 
 
 
@@ -184,3 +119,76 @@ function getId() {
 	}
 }
 
+function getProvince() {
+	for (let i = 0; i < garageId.length; i++) {
+		const getParkingId = require('./dummyData/' + garageId[i])
+		const checkOp = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
+		const checkAp = getParkingId.parkingFacilityInformation.hasOwnProperty('accessPoints')
+
+		if (checkOp || checkAp) {
+			// console.log('garageId', garageId[i], i, 'is being checked now')
+			if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses === undefined || getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0] === null) {
+				// console.log('logging id: ', garageId[i])
+				// console.log('yeeeeeeeeet')
+				garageProvince.push(String('it dont work like this'))
+			} else {
+				// console.log('logging id: ', garageId[i])
+				// console.log('ye boi')
+				const getProv = getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].province
+				garageProvince.push(getProv)
+			}
+		} else {
+			// console.log('found no specification value')
+			garageProvince.push(String('it dont work like this'))
+		}
+	}
+}
+
+// In this for loop I will be extracting the garage capacity out of the elements. I have encountered many problems with empty values and values that weren't even there.
+// I use the identifiers I got from the other dataset to look up the elements in another dataset. Here I can get various stuff.
+
+function getCapacity() {
+	for (let i = 0; i < garageId.length; i++) {
+		const getParkingId = require('./dummyData/' + garageId[i])
+		const check = getParkingId.parkingFacilityInformation.hasOwnProperty('specifications')
+
+		if (check) {
+			// console.log('garageId', garageId[i], i, 'has a specification')
+			if (getParkingId.parkingFacilityInformation.specifications[0] === null || getParkingId.parkingFacilityInformation.specifications[0] === undefined) {
+				// console.log('logging id: ', garageId[i])
+				// console.log('yeeeeeeeeet')
+				garageCap.push(String('it dont work like this'))
+			} else if (getParkingId.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true) {
+				// console.log('logging id: ', garageId[i])
+				// console.log('reeee')
+				const getCapacity = getParkingId.parkingFacilityInformation.specifications[0].capacity
+				garageCap.push(getCapacity)
+			} else {
+				// console.log('logging id: ', garageId[i])
+				// console.log('found the capacity!')
+				const getCapacity = getParkingId.parkingFacilityInformation.specifications[0].capacity
+				garageCap.push(getCapacity)
+			}
+
+		} else {
+			// console.log('found no specification value')
+			garageCap.push(String('it dont work like this'))
+
+		}
+	}
+	// console.log('this log should give 22: ', garageCap[0])
+
+	// checking if if/else statements really worked.
+	// const checkArray = garageCap.includes("it dont work like this")
+	// console.log('checking array..: ', checkArray)
+}
+
+function storeData() {
+	for (let i = 1; i < garageId.length; i++) {
+		allData.push({
+			id: garageId[i],
+			capacity: garageCap[i],
+			province: garageProvince[i]
+		})
+	}
+}
