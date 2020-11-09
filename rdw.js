@@ -44,12 +44,6 @@ const clean = cleanProv(chosenProv)
 
 
 
-
-
-
-
-
-
 // THE API WAY
 
 
@@ -219,6 +213,15 @@ function cleanProv(cleanedArray){
 	cleanedArray.filter(filterIt)
 
 	return cleanedArray
+}
+
+function calcAverage(chosenArray){
+	const total
+	const average
+	for (let i = 0; i < array.length; i++) {
+		const element = array[i];
+
+	}
 }
 
 // sanity checking if province is really found
