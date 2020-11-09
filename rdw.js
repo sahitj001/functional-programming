@@ -1,6 +1,6 @@
 // playing with data from folder so I won't get rate limited
 const jsonData = require('./v2')
-console.log(jsonData.ParkingFacilities.length)
+console.log('length of dataset: ', jsonData.ParkingFacilities.length)
 
 // I will store the unique ID of the garages in this array
 const garageId = []
@@ -19,11 +19,9 @@ getCapacity()
 getProvince()
 storeData()
 
-const test = sortProv(allData, 'Groningen')
-console.log(test)
+const chosenProv = filterProv('Groningen')
+const clean = cleanProv(chosenProv)
 
-// console.log('checking the dataaaaa', allData)
-// console.log('pls', allData[0])
 
 
 // First a quick sanity check. Here I request the information with the unique ID from another dataset. In this case I am looking for the parking capacity
@@ -40,30 +38,14 @@ console.log(test)
 // const infoGarageCheck = require('./dummyData/' + garageId[0])
 // console.log('testing dummydata: ', infoGarageCheck.parkingFacilityInformation.accessPoints[0].accessPointAddress.province)
 
-function sortProv(chosenArray, prov) {
-
-	for (let i = 0; i < chosenArray.length; i++) {
-		const checkProv = chosenArray[i].province.includes(prov)
-		console.log(chosenArray.length)
-		if(checkProv){
-			// console.log('found the chosen province!')
-
-
-		} else {
-		// console.log('not the province')
-		chosenArray.splice(i,1)
-		}
-	}
-
-	return chosenArray
-}
+// console.log('checking something', allData[0].province)
+// const checkyy = allData[0].province.includes(undefined)
+// console.log(checkyy)
 
 
 
 
 
-
-// TODO: sort/splice the object-array
 
 
 
@@ -114,12 +96,14 @@ const filterData = (data, column) => {
 }
 
 function getId() {
+	console.log('getting ID..')
 	for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
 		garageId.push(jsonData.ParkingFacilities[i].identifier)
 	}
 }
 
 function getProvince() {
+	console.log('getting provinces..')
 	for (let i = 0; i < garageId.length; i++) {
 		const getParkingId = require('./dummyData/' + garageId[i])
 		const checkOp = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
@@ -146,8 +130,8 @@ function getProvince() {
 
 // In this for loop I will be extracting the garage capacity out of the elements. I have encountered many problems with empty values and values that weren't even there.
 // I use the identifiers I got from the other dataset to look up the elements in another dataset. Here I can get various stuff.
-
 function getCapacity() {
+	console.log('getting garage capacities..')
 	for (let i = 0; i < garageId.length; i++) {
 		const getParkingId = require('./dummyData/' + garageId[i])
 		const check = getParkingId.parkingFacilityInformation.hasOwnProperty('specifications')
@@ -183,7 +167,9 @@ function getCapacity() {
 	// console.log('checking array..: ', checkArray)
 }
 
+// I store all the data I got in one array
 function storeData() {
+	console.log('storing id, capacities and province in allData..')
 	for (let i = 1; i < garageId.length; i++) {
 		allData.push({
 			id: garageId[i],
@@ -192,3 +178,62 @@ function storeData() {
 		})
 	}
 }
+
+// Here I will be filtering all my data to a specific province. This doesn't mean that all values are correct so I still have to check the objects.
+function filterProv(prov) {
+	console.log('filtering on province..')
+
+	function filterIt() {
+		for (let i = 0; i < allData.length; i++) {
+			if (allData[i].province === undefined || allData[i].province.includes(prov) == false) {
+				allData.splice(i, 1)
+				// console.log('yeeting', allData[i])
+			} else {
+				// if the correct province is found, do nothing
+				// console.log('u good', allData[i])
+			}
+		}
+
+	}
+
+	allData.filter(filterIt)
+
+	return allData
+}
+
+// Since we got all provinces we want, the next step will be to check if every object has a capacity
+function cleanProv(cleanedArray){
+	console.log('cleaning province..')
+
+	function filterIt() {
+		for (let i = 0; i < cleanedArray.length; i++) {
+			if (cleanedArray[i].capacity === undefined) {
+				cleanedArray.splice(i, 1)
+			} else {
+				//do nothing
+			}
+
+		}
+	}
+
+	cleanedArray.filter(filterIt)
+
+	return cleanedArray
+}
+
+// sanity checking if province is really found
+function qString() {
+	const convertedString = []
+	for (let i = 0; i < clean.length; i++) {
+		convertedString.push(clean[i].capacity.toString())
+	}
+	return convertedString
+}
+
+var fs = require('fs');
+
+fs.writeFile('wooork.txt', String(qString()), function (err) {
+
+	console.log('Saved!')
+})
+
