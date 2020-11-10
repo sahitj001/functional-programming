@@ -8,21 +8,24 @@ const garageId = []
 const garageCap = []
 // I will store the location aka the province of the garage into the array
 const garageProvince = []
-
 // Store all data in one object
 const allData = []
 
 
-// Here I get the unique ID of the parking garage and store it in the array
+// Here I get the unique ID of the parking garage and store it in garageId
 getId()
+// After having retrieved the ID, I can use that to find the capacity of the garage
 getCapacity()
+// I also can find in which province the garage is located in
 getProvince()
+// At last I store all values in one array as an object
 storeData()
+
 
 const chosenProv = filterProv('Groningen')
 const clean = cleanProv(chosenProv)
 
-
+const endgame = calcAverage(clean)
 
 // First a quick sanity check. Here I request the information with the unique ID from another dataset. In this case I am looking for the parking capacity
 // const infoGarageCheck = require('./dummyData/' + garageId[0])
@@ -38,9 +41,7 @@ const clean = cleanProv(chosenProv)
 // const infoGarageCheck = require('./dummyData/' + garageId[0])
 // console.log('testing dummydata: ', infoGarageCheck.parkingFacilityInformation.accessPoints[0].accessPointAddress.province)
 
-// console.log('checking something', allData[0].province)
-// const checkyy = allData[0].province.includes(undefined)
-// console.log(checkyy)
+
 
 
 
@@ -175,7 +176,7 @@ function storeData() {
 
 // Here I will be filtering all my data to a specific province. This doesn't mean that all values are correct so I still have to check the objects.
 function filterProv(prov) {
-	console.log('filtering on province..')
+	console.log('filtering on province:', prov)
 
 	function filterIt() {
 		for (let i = 0; i < allData.length; i++) {
@@ -187,7 +188,6 @@ function filterProv(prov) {
 				// console.log('u good', allData[i])
 			}
 		}
-
 	}
 
 	allData.filter(filterIt)
@@ -216,15 +216,18 @@ function cleanProv(cleanedArray){
 }
 
 function calcAverage(chosenArray){
-	const total
-	const average
-	for (let i = 0; i < array.length; i++) {
-		const element = array[i];
-
+	console.log('calculating average..')
+	let total = 0
+	let average = 0
+	for (let i = 0; i < chosenArray.length; i++) {
+		total += chosenArray[i].capacity
+		average = total / chosenArray.length
 	}
+	return average
 }
+// console.log('average is:', endgame)
 
-// sanity checking if province is really found
+// sanity checking by writing data on a file so i can see for myself if something is wrong
 function qString() {
 	const convertedString = []
 	for (let i = 0; i < clean.length; i++) {
@@ -235,7 +238,7 @@ function qString() {
 
 var fs = require('fs');
 
-fs.writeFile('wooork.txt', String(qString()), function (err) {
+fs.writeFile('wooork.txt', String(endgame), function (err) {
 
 	console.log('Saved!')
 })
