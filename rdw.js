@@ -1,6 +1,13 @@
 // playing with data from folder so I won't get rate limited
-const jsonData = require('./v2')
-console.log('length of dataset: ', jsonData.ParkingFacilities.length)
+
+var fs = require('browserify-fs');
+const jsonDataa = fs.readFileSync('v2.json')
+const theData = JSON.parse(jsonDataa)
+console.log(theData)
+
+// console.log('length of dataset: ', jsonData.ParkingFacilities[0].identifier)
+
+// const garages = require('./dummyData/')
 
 // I will store the unique ID of the garages in this array
 const garageId = []
@@ -13,7 +20,7 @@ const allData = []
 
 
 // Here I get the unique ID of the parking garage and store it in garageId
-getId()
+// getId()
 // After having retrieved the ID, I can use that to find the capacity of the garage
 getCapacity()
 // I also can find in which province the garage is located in
@@ -21,11 +28,11 @@ getProvince()
 // At last I store all values in one array as an object
 storeData()
 
+// After I got all my data, I will then look for the province I want to
+const myProv = filterProv('Groningen')
 
-const chosenProv = filterProv('Groningen')
-const clean = cleanProv(chosenProv)
 
-const endgame = calcAverage(clean)
+
 
 // First a quick sanity check. Here I request the information with the unique ID from another dataset. In this case I am looking for the parking capacity
 // const infoGarageCheck = require('./dummyData/' + garageId[0])
@@ -48,37 +55,20 @@ const endgame = calcAverage(clean)
 // THE API WAY
 
 
+// const url = 'https://npropendata.rdw.nl/parkingdata/v2/'
 
-// Here I will get the AreaId and the capacity of the parking garages
-const url1 = 'https://opendata.rdw.nl/resource/b3us-f26s.json?$limit=1563'
+// const cors = 'https://cors-anywhere.herokuapp.com/'
 
-// Here I will get the UUID out of the API so I later can find the location of the garage
-const url2 = 'https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-PARKEERGEBIED/mz4f-59fw?$limit=7928'
-
-const url3 = 'https://npropendata.rdw.nl/parkingdata/v2/'
-
-const cors = 'https://cors-anywhere.herokuapp.com/'
-
-// Getting garage ID so I can look up its unique identifier. I will also get the parkingspots from this API.
-// const data1 = getData(cors + url3)
+// // Getting garage ID so I can look up its unique identifier. I will also get the parkingspots from this API.
+// const data = getData(cors + url)
 // 	.then(data => {
 // 		// Get unique ID of garage
-// 		const identifier = filterData(data, 'identifier')
-// 		console.log(identifier);
+// 		const myData = filterData(data, 'identifier')
+// 		console.log('identifier', myData);
 
-// 		return identifier
+// 		return myData
 // 	})
-
-// .then(information => {
-// 	console.log('informationnn', information)
-
-// 	for (let i = 0; i < information.length; i++) {
-// 		const element = array[i];
-
-// 	}
-
-// 	return information
-// })
+// console.log(data)
 
 async function getData(url) {
 	const response = await fetch(url)
@@ -90,17 +80,19 @@ const filterData = (data, column) => {
 	return data.ParkingFacilities.map(result => result[column])
 }
 
-function getId() {
-	console.log('getting ID..')
-	for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
-		garageId.push(jsonData.ParkingFacilities[i].identifier)
-	}
-}
+// function getId() {
+// 	console.log('getting ID..')
+// 	for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
+// 		garageId.push(jsonData.ParkingFacilities[i].identifier)
+// 	}
+// }
 
+// Here I am getting the province out of the dataset with the ID.
+// Just like getCapacity, I encountered many problems within the dataset so I tried many ways of extracting the data.
 function getProvince() {
 	console.log('getting provinces..')
 	for (let i = 0; i < garageId.length; i++) {
-		const getParkingId = require('./dummyData/' + garageId[i])
+		const getParkingId = getFiles(garageId[i])
 		const checkOp = getParkingId.parkingFacilityInformation.hasOwnProperty('operator')
 		const checkAp = getParkingId.parkingFacilityInformation.hasOwnProperty('accessPoints')
 
@@ -128,7 +120,7 @@ function getProvince() {
 function getCapacity() {
 	console.log('getting garage capacities..')
 	for (let i = 0; i < garageId.length; i++) {
-		const getParkingId = require('./dummyData/' + garageId[i])
+		const getParkingId = getFiles(garageId[i])
 		const check = getParkingId.parkingFacilityInformation.hasOwnProperty('specifications')
 
 		if (check) {
@@ -155,14 +147,9 @@ function getCapacity() {
 
 		}
 	}
-	// console.log('this log should give 22: ', garageCap[0])
-
-	// checking if if/else statements really worked.
-	// const checkArray = garageCap.includes("it dont work like this")
-	// console.log('checking array..: ', checkArray)
 }
 
-// I store all the data I got in one array
+// I store all the data I got in one array.
 function storeData() {
 	console.log('storing id, capacities and province in allData..')
 	for (let i = 1; i < garageId.length; i++) {
@@ -176,45 +163,41 @@ function storeData() {
 
 // Here I will be filtering all my data to a specific province. This doesn't mean that all values are correct so I still have to check the objects.
 function filterProv(prov) {
-	console.log('filtering on province:', prov)
+	const chosenProv = allData.filter(filterChosenProv)
+	const result = chosenProv.filter(filterJunk)
 
-	function filterIt() {
+// I first check if the values are empty or if they are not the province we want.
+	console.log('filtering on province:', prov)
+	function filterChosenProv() {
 		for (let i = 0; i < allData.length; i++) {
 			if (allData[i].province === undefined || allData[i].province.includes(prov) == false) {
 				allData.splice(i, 1)
-				// console.log('yeeting', allData[i])
+				//  console.log('yeeting', allData[i])
 			} else {
 				// if the correct province is found, do nothing
 				// console.log('u good', allData[i])
 			}
 		}
+		return allData
 	}
 
-	allData.filter(filterIt)
-
-	return allData
-}
-
-// Since we got all provinces we want, the next step will be to check if every object has a capacity
-function cleanProv(cleanedArray){
+	// Since we got the province we want, the next step will be to check if every object has a capacity. If it doesn't have a capacity, it will be removed from the array.
 	console.log('cleaning province..')
-
-	function filterIt() {
-		for (let i = 0; i < cleanedArray.length; i++) {
-			if (cleanedArray[i].capacity === undefined) {
-				cleanedArray.splice(i, 1)
+	function filterJunk() {
+		for (let i = 0; i < chosenProv.length; i++) {
+			if (chosenProv[i].capacity === undefined) {
+				chosenProv.splice(i, 1)
 			} else {
 				//do nothing
 			}
-
 		}
+		return chosenProv
 	}
 
-	cleanedArray.filter(filterIt)
-
-	return cleanedArray
+	return result
 }
 
+// Here I calculate the average of the capacity of the province.
 function calcAverage(chosenArray){
 	console.log('calculating average..')
 	let total = 0
@@ -230,15 +213,21 @@ function calcAverage(chosenArray){
 // sanity checking by writing data on a file so i can see for myself if something is wrong
 function qString() {
 	const convertedString = []
-	for (let i = 0; i < clean.length; i++) {
-		convertedString.push(clean[i].capacity.toString())
+	for (let i = 0; i < myProv.length; i++) {
+		convertedString.push(myProv[i].province.toString())
 	}
 	return convertedString
 }
 
-var fs = require('fs');
+const testit = qString(myProv)
 
-fs.writeFile('wooork.txt', String(endgame), function (err) {
+function getFiles(id){
+	const getFile = fs.readFileSync('./dummyData/' + id + '.json')
+	const parsedFile = JSON.parse(getFile)
+	return parsedFile
+}
+
+fs.writeFile('wooork.txt', String(testit), function (err) {
 
 	console.log('Saved!')
 })
