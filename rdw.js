@@ -1,16 +1,18 @@
 // playing with data from folder so I won't get rate limited
 
-var fs = require('browserify-fs');
-const jsonDataa = fs.readFileSync('v2.json')
-const theData = JSON.parse(jsonDataa)
-console.log(theData)
+const fs = require('fs')
+const myData = require('./v2.json')
+// console.log(myData)
+
 
 // console.log('length of dataset: ', jsonData.ParkingFacilities[0].identifier)
 
 // const garages = require('./dummyData/')
 
 // I will store the unique ID of the garages in this array
-const garageId = []
+const garageId = myData.ParkingFacilities.map(getId)
+
+// const getData = garageId.map()
 // I will store the garage capacities in this array
 const garageCap = []
 // I will store the location aka the province of the garage into the array
@@ -18,9 +20,13 @@ const garageProvince = []
 // Store all data in one object
 const allData = []
 
+function yayeet(){
+	const getParkingId = getFiles(garageId[i])
+}
+
 
 // Here I get the unique ID of the parking garage and store it in garageId
-// getId()
+// getId(myData)
 // After having retrieved the ID, I can use that to find the capacity of the garage
 getCapacity()
 // I also can find in which province the garage is located in
@@ -29,7 +35,7 @@ getProvince()
 storeData()
 
 // After I got all my data, I will then look for the province I want to
-const myProv = filterProv('Groningen')
+// const myProv = filterProv('Zuid-Holland')
 
 
 
@@ -50,16 +56,15 @@ const myProv = filterProv('Groningen')
 
 
 
-
+// --------------------------------------------------------------------
 
 // THE API WAY
-
 
 // const url = 'https://npropendata.rdw.nl/parkingdata/v2/'
 
 // const cors = 'https://cors-anywhere.herokuapp.com/'
 
-// // Getting garage ID so I can look up its unique identifier. I will also get the parkingspots from this API.
+// Getting garage ID so I can look up its unique identifier. I will also get the parkingspots from this API.
 // const data = getData(cors + url)
 // 	.then(data => {
 // 		// Get unique ID of garage
@@ -70,22 +75,28 @@ const myProv = filterProv('Groningen')
 // 	})
 // console.log(data)
 
-async function getData(url) {
-	const response = await fetch(url)
-	const data = await response.json()
-	return data
-}
-
-const filterData = (data, column) => {
-	return data.ParkingFacilities.map(result => result[column])
-}
-
-// function getId() {
-// 	console.log('getting ID..')
-// 	for (let i = 0; i < jsonData.ParkingFacilities.length; i++) {
-// 		garageId.push(jsonData.ParkingFacilities[i].identifier)
-// 	}
+// async function getData(url) {
+// 	const response = await fetch(url)
+// 	const data = await response.json()
+// 	return data
 // }
+
+// const filterData = (data, column) => {
+// 	return data.ParkingFacilities.map(result => result[column])
+// }
+
+// --------------------------------------------------------------------
+
+// Retrieving the identifier from the dataset
+function getId(data) {
+	return data.identifier
+}
+
+// Here I am retrieving the specific garage data
+function getFiles(id){
+	const getFile = require('./dummyData/' + id + '.json')
+	return getFile
+}
 
 // Here I am getting the province out of the dataset with the ID.
 // Just like getCapacity, I encountered many problems within the dataset so I tried many ways of extracting the data.
@@ -101,7 +112,7 @@ function getProvince() {
 			if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses === undefined || getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0] === null) {
 				// console.log('logging id: ', garageId[i])
 				// console.log('yeeeeeeeeet')
-				garageProvince.push(String('it dont work like this'))
+				// garageProvince.push(String('it dont work like this'))
 			} else {
 				// console.log('logging id: ', garageId[i])
 				// console.log('ye boi')
@@ -110,7 +121,7 @@ function getProvince() {
 			}
 		} else {
 			// console.log('found no specification value')
-			garageProvince.push(String('it dont work like this'))
+			// garageProvince.push(String('it dont work like this'))
 		}
 	}
 }
@@ -120,6 +131,7 @@ function getProvince() {
 function getCapacity() {
 	console.log('getting garage capacities..')
 	for (let i = 0; i < garageId.length; i++) {
+
 		const getParkingId = getFiles(garageId[i])
 		const check = getParkingId.parkingFacilityInformation.hasOwnProperty('specifications')
 
@@ -128,7 +140,7 @@ function getCapacity() {
 			if (getParkingId.parkingFacilityInformation.specifications[0] === null || getParkingId.parkingFacilityInformation.specifications[0] === undefined) {
 				// console.log('logging id: ', garageId[i])
 				// console.log('yeeeeeeeeet')
-				garageCap.push(String('it dont work like this'))
+				// garageCap.push(String('it dont work like this'))
 			} else if (getParkingId.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true) {
 				// console.log('logging id: ', garageId[i])
 				// console.log('reeee')
@@ -143,7 +155,7 @@ function getCapacity() {
 
 		} else {
 			// console.log('found no specification value')
-			garageCap.push(String('it dont work like this'))
+			// garageCap.push(String('it dont work like this'))
 
 		}
 	}
@@ -185,7 +197,8 @@ function filterProv(prov) {
 	console.log('cleaning province..')
 	function filterJunk() {
 		for (let i = 0; i < chosenProv.length; i++) {
-			if (chosenProv[i].capacity === undefined) {
+
+			if (typeof chosenProv[i].capacity === 'undefined' || typeof chosenProv[i].capacity === 'null' || chosenProv[i].hasOwnProperty('capacity') == false) {
 				chosenProv.splice(i, 1)
 			} else {
 				//do nothing
@@ -193,7 +206,6 @@ function filterProv(prov) {
 		}
 		return chosenProv
 	}
-
 	return result
 }
 
@@ -208,7 +220,6 @@ function calcAverage(chosenArray){
 	}
 	return average
 }
-// console.log('average is:', endgame)
 
 // sanity checking by writing data on a file so i can see for myself if something is wrong
 function qString() {
@@ -219,16 +230,10 @@ function qString() {
 	return convertedString
 }
 
-const testit = qString(myProv)
+// const testit = qString(myProv)
+const convert = JSON.stringify(allData)
 
-function getFiles(id){
-	const getFile = fs.readFileSync('./dummyData/' + id + '.json')
-	const parsedFile = JSON.parse(getFile)
-	return parsedFile
-}
-
-fs.writeFile('wooork.txt', String(testit), function (err) {
-
+fs.writeFile('allData.json', convert, function () {
 	console.log('Saved!')
 })
 
