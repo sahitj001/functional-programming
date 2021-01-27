@@ -19,7 +19,7 @@ I assume that Noord-Holland will be having the highest average parking spots sin
 
 [I will be needing the unique identifier of the garages](https://npropendata.rdw.nl/parkingdata/v2/)
 
-I will also need the parking garage data. This data has been downloaded locally.
+I will also need the parking garage data. This data has been downloaded locally. Shoutout to Sam for providing me this!
 
 ## How do I install this project?
 Install the project:
