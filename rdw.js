@@ -20,10 +20,6 @@ const garageProvince = []
 // Store all data in one object
 const allData = []
 
-function yayeet(){
-	const getParkingId = getFiles(garageId[i])
-}
-
 
 // Here I get the unique ID of the parking garage and store it in garageId
 // getId(myData)
@@ -34,8 +30,7 @@ getProvince()
 // At last I store all values in one array as an object
 storeData()
 
-// After I got all my data, I will then look for the province I want to
-// const myProv = filterProv('Zuid-Holland')
+
 
 
 
@@ -108,20 +103,16 @@ function getProvince() {
 		const checkAp = getParkingId.parkingFacilityInformation.hasOwnProperty('accessPoints')
 
 		if (checkOp || checkAp) {
-			// console.log('garageId', garageId[i], i, 'is being checked now')
+
 			if (getParkingId.parkingFacilityInformation.operator.administrativeAddresses === undefined || getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0] === null) {
-				// console.log('logging id: ', garageId[i])
-				// console.log('yeeeeeeeeet')
-				// garageProvince.push(String('it dont work like this'))
+
 			} else {
-				// console.log('logging id: ', garageId[i])
-				// console.log('ye boi')
+
 				const getProv = getParkingId.parkingFacilityInformation.operator.administrativeAddresses[0].province
 				garageProvince.push(getProv)
 			}
 		} else {
-			// console.log('found no specification value')
-			// garageProvince.push(String('it dont work like this'))
+
 		}
 	}
 }
@@ -136,26 +127,21 @@ function getCapacity() {
 		const check = getParkingId.parkingFacilityInformation.hasOwnProperty('specifications')
 
 		if (check) {
-			// console.log('garageId', garageId[i], i, 'has a specification')
+
 			if (getParkingId.parkingFacilityInformation.specifications[0] === null || getParkingId.parkingFacilityInformation.specifications[0] === undefined) {
-				// console.log('logging id: ', garageId[i])
-				// console.log('yeeeeeeeeet')
-				// garageCap.push(String('it dont work like this'))
+
 			} else if (getParkingId.parkingFacilityInformation.specifications.hasOwnProperty('capacity') == true) {
-				// console.log('logging id: ', garageId[i])
-				// console.log('reeee')
+
 				const getCapacity = getParkingId.parkingFacilityInformation.specifications[0].capacity
 				garageCap.push(getCapacity)
 			} else {
-				// console.log('logging id: ', garageId[i])
-				// console.log('found the capacity!')
+
 				const getCapacity = getParkingId.parkingFacilityInformation.specifications[0].capacity
 				garageCap.push(getCapacity)
 			}
 
 		} else {
-			// console.log('found no specification value')
-			// garageCap.push(String('it dont work like this'))
+
 
 		}
 	}
