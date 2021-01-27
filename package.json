@@ -4,11 +4,6 @@
   "description": "functional programming course by the university of Amsterdam",
   "main": "index.js",
   "dependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "browserify-fs": "^1.0.0",
     "fs": "0.0.1-security"
   },
   "devDependencies": {},
