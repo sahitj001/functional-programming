@@ -10,33 +10,23 @@ We are going to deliver an interactive data visualization. We must have a good t
 
 ## Research question
 
-**How much parkingspots do garages have on an average per province?**
+**Is there a connection between the number of parking spots and province?**
 
-I assume that Noord-Holland will have the most parkingspots on average.
+Is there a connection between the number of parking spots and province?
 
 ## Data I need
 
-[I will be needing the unique identifier of the garages](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-PARKEERGEBIED/mz4f-59fw)
+[I will be needing the unique identifier of the garages](https://npropendata.rdw.nl/parkingdata/v2/)
 
-[I will need the parking spots](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-SPECIFICATIES-PARKEERGEBIED/b3us-f26s)
-
-[I will need the location of the parking garage](https://opendata.rdw.nl/Parkeren/Open-Data-Parkeren-Index-Statisch-en-Dynamisch/f6v7-gjpa)
-
-
-
-## Features
-TBA
-
-## What dataset am I using?
-TBA
+I will also need the parking garage data. This data has been downloaded locally.
 
 ## How do I install this project?
-TBA
-
-## Live link of project
-TBA
+Install the project:
+```
+npm install
+```
 
 ## Credits and License
-Shoutout to Sam and Ralf (for now) for helping me out.
+Shoutout to Sam and Ralf for helping me out here and there.
 This project has a MIT license.
 
