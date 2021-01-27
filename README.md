@@ -12,7 +12,8 @@ We are going to deliver an interactive data visualization. We must have a good t
 
 **Is there a connection between the number of parking spots and province?**
 
-Is there a connection between the number of parking spots and province?
+### Assumptions
+I assume that Noord-Holland will be having the highest average parking spots since Amsterdam has the most population dense city of the Netherlands.
 
 ## Data I need
 
